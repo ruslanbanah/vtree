@@ -1,16 +1,12 @@
 
 var tree = new VTree();
+var bob = tree.appendChild({name:"Bob", href:'/#'});
 
-var bob = tree.appendChild({name:"Bob"});
-tree.appendChild({name: "Peter"}).appendChild({name: "Peter_m1"});
-tree.appendChild({name: "Julia"});
-tree.appendChild({name: "Susan"});
-bob.appendChild({name: "Bob_m1"});
-bob.appendChild({name: "Bob_m2"});
-bob.appendChild({name: "Bom_m3"});
+tree.appendChild({name: "Peter", href:'/#'}).appendChild({name: "Peter_m1", href:'/#'}).  appendChild({name: "Peter_m1_mm22", href:'/#'});
+tree.appendChild({name: "Julia", href:'/#'});
+tree.appendChild({name: "Susan", href:'/#'});
+bob.appendChild({name: "Bob_m1", href:'/#'});
+bob.appendChild({name: "Bob_m2", href:'/#'});
+bob.appendChild({name: "Bom_m3", href:'/#'});
 
-let div = document.getElementById('tree');
-tree.render(div);
-// bob.removeNode();
-
-tree.render(div);
+// tree.httpGetTree('tree.json');
