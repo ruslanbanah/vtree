@@ -1,5 +1,5 @@
 
-var tree = new Node();
+var tree = new VTree();
 
 var bob = tree.appendChild({name:"Bob"});
 tree.appendChild({name: "Peter"}).appendChild({name: "Peter_m1"});
@@ -10,4 +10,7 @@ bob.appendChild({name: "Bob_m2"});
 bob.appendChild({name: "Bom_m3"});
 
 let div = document.getElementById('tree');
+tree.render(div);
+// bob.removeNode();
+
 tree.render(div);
