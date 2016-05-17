@@ -1,7 +1,160 @@
-li.open>ul {
+li.open > ul {
     display: block;
 }
 
-li.close>ul {
+li.close > ul {
     display: none;
+}
+
+#contextMenu {
+    z-index: 300;
+    position: absolute;
+    left: 5px;
+    border: 1px solid #444;
+    background-color: #F5F5F5;
+    display: none;
+    box-shadow: 0 0 10px rgba( 0, 0, 0, .4 );
+    font-size: 12px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+#contextMenu ul {
+    list-style: none;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    max-width: 72px;
+}
+
+#contextMenu li {
+    position: relative;
+    min-width: 60px;
+    color: #444;
+    display: inline-block;
+    padding: 6px;
+    text-decoration: none;
+    cursor: default;
+}
+
+#contextMenu li:hover { background: #444; }
+
+#contextMenu li:hover { color: #EEE; }
+
+.vtree .editable {
+    height: 1em;
+    outline: none;
+    border: 1px solid #dadada;
+    border-radius: 4px;
+}
+
+.vtree {
+    padding: 0;
+    clear: both;
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.vtree * {
+    font-size: 100.1%;
+}
+
+.vtree ul {
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 1.5em 0;
+    list-style-type: none;
+}
+
+.vtree ul ul {
+    overflow: visible;
+    width: auto;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0.75em;
+}
+
+.vtree ul.l {
+    border-left: 1px solid;
+    margin-left: -1px;
+}
+
+.vtree li.cl ul {
+    display: none;
+}
+
+.vtree li {
+    margin: 0;
+    padding: 0;
+}
+
+.vtree li li {
+    margin: 0 0 0 0.5em;
+    border-left: 1px dotted;
+    padding: 0;
+}
+
+.vtree li div {
+    position: relative;
+    height: 1.5em;
+    min-height: 16px;
+}
+
+.vtree li li div {
+    border-bottom: 1px dotted;
+}
+
+.vtree li p {
+    position: absolute;
+    z-index: 1;
+    top: 0.8em;
+    left: 1.75em;
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px dashed;
+    padding: 0;
+}
+
+.vtree a {
+    padding: 0.1em 0.2em;
+    white-space: nowrap;
+}
+
+.vtree img.i {
+    border-right: 2px solid;
+    border-bottom: 0.5em solid;
+    margin-bottom: -0.5em;
+    vertical-align: middle;
+}
+
+.vtree a.sc {
+    position: absolute;
+    top: 0.06em;
+    margin-left: -1em;
+    padding: 0;
+    text-decoration: none;
+}
+
+/* colors */
+.vtree li p,
+.vtree img.i,
+.vtree .sc {
+    background: #fff;
+}
+
+.vtree ul.l,
+.vtree li p,
+.vtree img.i {
+    border-color: #f5f5ea;
+}
+
+.vtree a,
+.vtree a.sc,
+.vtree a.sc:hover {
+    color: #000000;
+}
+
+.vtree a:hover {
+    color: #cc0000;
 }
