@@ -1,0 +1,36 @@
+{
+  "name": "vtree",
+  "version": "1.0.0",
+  "description": "Virtual Tree",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongoose": "~3.6.13",
+    "body-parser": "~1.0.1",
+    "path": "^0.12.7",
+    "node.extend": "^1.1.5"
+  },
+  "devDependencies": {
+
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruslanbanah/vtree.git"
+  },
+  "keywords": [
+    "tree",
+    "treejs",
+    "vtree",
+    "virtual",
+    "tree"
+  ],
+  "author": "Banakh Ruslan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruslanbanah/vtree/issues"
+  },
+  "homepage": "https://github.com/ruslanbanah/vtree#readme"
+}

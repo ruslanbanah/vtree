@@ -16,7 +16,10 @@ class ContextMenu {
       this.createMenuItem = function(item) {
         let li = document.createElement('li');
         li.innerHTML = item.name;
-        li.addEventListener('click', (e) => {this.hide(); item.callback.apply(this.node, arguments);});
+        li.addEventListener('click', (e) => {
+          this.hide();
+          item.callback.apply(this.node, arguments);
+        });
         this.ul.appendChild(li);
         return li;
       };
