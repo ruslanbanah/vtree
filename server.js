@@ -87,12 +87,7 @@ api.route('/node/parent/:parent_id/children')
 api.route('/node')
     .post(function(req, res) {
       var node = new Node();
-
-      node.name = req.body.name;
-      node.href = req.body.href;
-      node.parent = req.body.parent;
-      node.isOpen = req.body.isOpen;
-      node.icon = req.body.icon;
+      node = extend(node, req.body);
 
       node.save(function(err) {
         if (err)

@@ -97,7 +97,7 @@ class VTree {
   toggle() {
     if (this.isOpen) {
       this.close();
-    }else{
+    } else {
       this.open();
     }
   }
@@ -111,7 +111,9 @@ class VTree {
           {name: 'Delete', callback: this.removeNode}
         ]);
 
-    template.$marker.addEventListener('click', (e) => {this.toggle();});
+    template.$marker.addEventListener('click', (e) => {
+      this.toggle();
+    });
 
     template.$node.addEventListener('contextmenu', function(e) {
       e.stopPropagation();
@@ -124,11 +126,10 @@ class VTree {
   createNode() {
     let self = this;
     let newNode = self.appendChild();
-    if (!self.isOpen) {
-      self.open();
-    }
+
+    self.open();
     editor(newNode.template.$link, function(result) {
-      http('POST','/api/node', {name: result, parent: self._id, isOpen: self.isOpen}).then(function(res){
+      http('POST', '/api/node', {name: result, parent: self._id, isOpen: self.isOpen}).then(function(res) {
         newNode.template.$link.text = newNode.name = res.name;
         newNode._id = res._id;
       });
@@ -139,7 +140,7 @@ class VTree {
     if (this.template.$link.style.display != 'none') {
       let self = this;
       editor(this.template.$link, function(result) {
-        http('PUT','/api/node/' + self._id, {name: result, isOpen: self.isOpen}).then(function(res){
+        http('PUT', '/api/node/' + self._id, {name: result, isOpen: self.isOpen}).then(function(res) {
           self.template.$link.text = self.name = res.name;
         });
 
@@ -152,7 +153,7 @@ class VTree {
       return false;
     }
     let self = this;
-    http('DELETE','/api/node/' + this._id).then(function(res){
+    http('DELETE', '/api/node/' + this._id).then(function(res) {
       let children = self.parent.children,
           index = children.indexOf(self),
           result = children.splice(index, 1).shift();
@@ -179,7 +180,7 @@ class VTree {
 
           if (res.length) {
             children(self, '');
-          }else{
+          } else {
             self.createNode();
           }
         }

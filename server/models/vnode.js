@@ -5,7 +5,6 @@ var NodeSchema   = new Schema({
   name: String,
   icon: String,
   href: String,
-  isOpen: String,
   parent: String
 });
 
