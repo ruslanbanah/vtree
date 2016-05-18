@@ -58,8 +58,9 @@ class VTree {
 
     let tpl = document.createElement('div'),
         p = document.createElement('p'),
-        name = document.createElement('a');
-    name.href = this.href;
+        name = document.createElement('a'),
+        icon = document.createElement('img');
+
     this.template.$link = name;
     this.template.$marker = document.createElement('a');
 
@@ -68,6 +69,9 @@ class VTree {
     this.template.$marker.className = 'sc';
     p.appendChild(this.template.$marker);
     name.innerHTML = this.name;
+    name.href = this.href;
+    icon.src = this.icon;
+    p.appendChild(icon);
     p.appendChild(name);
     tpl.appendChild(p);
     this.template.$node.appendChild(tpl);
