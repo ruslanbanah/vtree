@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var extend = require('node.extend');
 
-var Node = require('./server/models/vnode');
+var Node = require('./models/vnode');
 const port = process.env.PORT || 8080;
 const app = express();
 const oneDay = 86400000;
@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/vtree');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname + '/app', {maxAge: oneDay}));
+app.use(express.static(__dirname + '/../app', {maxAge: oneDay}));
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));

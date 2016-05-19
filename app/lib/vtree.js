@@ -1,6 +1,7 @@
 'use strict';
 const ARROW_RIGTH = 9658;
 const ARROW_DOWN = 9660;
+const POINT = 9899;
 
 class VTree {
   constructor(parent, data) {
@@ -37,65 +38,69 @@ class VTree {
     return !this.parent;
   }
 
-  appendChild(data) {
+  appendNode(data) {
     let child = new VTree(this, data);
 
     this.children.push(child);
-    this.template.$marker.innerHTML = '&#' + ARROW_RIGTH + ';';
+    this.template.$marker.setInnerHTML('&#' + ARROW_RIGTH + ';');
     this.render();
 
     return child;
   }
 
   renderNode() {
+    let tpl = this.template,
+        parentTpl = this.parent ? this.parent.template : null;
+
     if (this.isRoot()) {
-      this.template.$wrapper = document.createElement('ul');
-      this.template.$wrapper.className = 'tree';
+      tpl.$wrapper = document.createElement('ul').addClass(tree);
     }
 
-    this.template.$node = document.createElement('li');
-    this.template.$node.className = 'cl';
+    tpl.$node = document.createElement('li').addClass('cl');
+    tpl.$link = document.createElement('a')
+        .setInnerHTML(this.name)
+        .attr('href', this.href);
+    tpl.$marker = document.createElement('a')
+        .setInnerHTML('&#'+ POINT +';')
+        .attr('href', '#')
+        .addClass('sc');
 
-    let tpl = document.createElement('div'),
-        p = document.createElement('p'),
-        name = document.createElement('a'),
-        icon = document.createElement('img');
+    let icon = document.createElement('img')
+            .attr('src', this.icon),
+        p = document.createElement('p')
+            .append(tpl.$marker)
+            .append(icon)
+            .append(tpl.$link),
+        div = document.createElement('div')
+            .append(p);
 
-    this.template.$link = name;
-    this.template.$marker = document.createElement('a');
+    tpl.$node.append(div);
 
-    this.template.$marker.innerHTML = '&#9899;';
-    this.template.$marker.setAttribute('href', '#');
-    this.template.$marker.className = 'sc';
-    p.appendChild(this.template.$marker);
-    name.innerHTML = this.name;
-    name.href = this.href;
-    icon.src = this.icon;
-    p.appendChild(icon);
-    p.appendChild(name);
-    tpl.appendChild(p);
-    this.template.$node.appendChild(tpl);
-
-    let parent = this.parent;
-    if (parent) {
-      if (!parent.template.$wrapper) {
-        parent.template.$wrapper = document.createElement('ul');
-        parent.template.$node.appendChild(parent.template.$wrapper);
+    if (parentTpl) {
+      if (!parentTpl.$wrapper) {
+        parentTpl.$wrapper = document.createElement('ul');
+        parentTpl.$node.append(parentTpl.$wrapper);
       }
-      parent.template.$wrapper.appendChild(this.template.$node);
+      parentTpl.$wrapper.append(tpl.$node);
     }
   }
 
   open() {
     this.isOpen = true;
-    this.template.$marker.innerHTML = '&#' + ARROW_DOWN + ';';
-    this.template.$marker.parentNode.parentNode.parentNode.className = '';
+    this.template.$marker.setInnerHTML('&#' + ARROW_DOWN + ';')
+        .parentNode
+        .parentNode
+        .parentNode
+        .removeClass('cl');
   }
 
   close() {
     this.isOpen = false;
-    this.template.$marker.innerHTML = '&#' + ARROW_RIGTH + ';';
-    this.template.$marker.parentNode.parentNode.parentNode.className = 'cl';
+    this.template.$marker.setInnerHTML('&#' + ARROW_RIGTH + ';')
+        .parentNode
+        .parentNode
+        .parentNode
+        .addClass('cl');
   }
 
   toggle() {
@@ -129,25 +134,27 @@ class VTree {
 
   createNode() {
     let self = this;
-    let newNode = self.appendChild();
+    let newNode = self.appendNode(),
+        tpl = newNode.template;
 
     self.open();
-    editor(newNode.template.$link, function(result) {
+    editor(tpl.$link, function(result) {
       http('POST', '/api/node', {name: result, parent: self._id, isOpen: self.isOpen}).then(function(res) {
-        newNode.template.$link.text = newNode.name = res.name;
+        tpl.$link.text = newNode.name = res.name;
         newNode._id = res._id;
       });
     });
   }
 
   editNode() {
-    if (this.template.$link.style.display != 'none') {
-      let self = this;
-      editor(this.template.$link, function(result) {
+    let self = this,
+        tpl = this.template;
+    
+    if (tpl.$link.style.display != 'none') {
+      editor(tpl.$link, function(result) {
         http('PUT', '/api/node/' + self._id, {name: result, isOpen: self.isOpen}).then(function(res) {
-          self.template.$link.text = self.name = res.name;
+          tpl.$link.text = self.name = res.name;
         });
-
       });
     }
   }
@@ -167,7 +174,7 @@ class VTree {
 
   render() {
     let elements = document.getElementsByClassName('vtree');
-    elements[0].appendChild(this.root.template.$wrapper);
+    elements[0].append(this.root.template.$wrapper);
   }
 
   fetch() {
@@ -177,7 +184,7 @@ class VTree {
           function children(tr, parent) {
             res.forEach(function(item) {
               if (item.parent == parent) {
-                children(tr.appendChild(item), item._id);
+                children(tr.appendNode(item), item._id);
               }
             });
           }
