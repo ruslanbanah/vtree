@@ -1,4 +1,5 @@
 # vtree
-
-npm i
-npm start
+## Install
+- `npm i`
+## Start server
+- `npm start`
