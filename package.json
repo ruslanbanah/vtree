@@ -4,15 +4,13 @@
   "description": "Virtual Tree",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "~1.0.1",
     "express": "^4.13.4",
     "mongoose": "~3.6.13",
-    "body-parser": "~1.0.1",
-    "path": "^0.12.7",
-    "node.extend": "^1.1.5"
+    "node.extend": "^1.1.5",
+    "path": "^0.12.7"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "scripts": {
     "start": "node server/server.js"
   },

@@ -14,7 +14,6 @@ mongoose.connect('mongodb://localhost/vtree');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
 app.use(express.static(__dirname + '/../app', {maxAge: oneDay}));
 
 app.get('/', function(req, res) {

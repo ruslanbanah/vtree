@@ -1,6 +1,9 @@
 Object.prototype.extend = function(source) {
-  for (var property in source)
-    this[property] = source[property];
+  for (var property in source) {
+    if (source.hasOwnProperty(property)) {
+      this[property] = source[property];
+    }
+  }
   return this;
 };
 

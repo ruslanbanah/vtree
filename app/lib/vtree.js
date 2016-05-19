@@ -1,12 +1,13 @@
 'use strict';
-const ARROW_RIGTH = 9658;
-const ARROW_DOWN = 9660;
-const POINT = 9899;
+const ARROW_RIGHT = '&#9658;';
+const ARROW_DOWN = '&#9660;';
+const POINT = '&#9899;';
+const apiURL = '/api/';
 
 class VTree {
   constructor(parent, data) {
     this.sort = parent ? parent.children.length : 0;
-    this._id = this.generateId(parent);
+    this._id = this._generateId(parent);
     this.isOpen = false;
     this.name = 'NoName';
     this.href = '';
@@ -25,12 +26,12 @@ class VTree {
     };
 
     this.renderNode();
-    this.events();
+    this._events();
 
     this.render();
   }
 
-  generateId(parent) {
+  _generateId(parent) {
     return parent ? ([parent._id, parent.children.length].join('-')) : '';
   }
 
@@ -42,7 +43,7 @@ class VTree {
     let child = new VTree(this, data);
 
     this.children.push(child);
-    this.template.$marker.setInnerHTML('&#' + ARROW_RIGTH + ';');
+    this.template.$marker.setInnerHTML(ARROW_RIGHT);
     this.render();
 
     return child;
@@ -61,7 +62,7 @@ class VTree {
         .setInnerHTML(this.name)
         .attr('href', this.href);
     tpl.$marker = document.createElement('a')
-        .setInnerHTML('&#'+ POINT +';')
+        .setInnerHTML(POINT)
         .attr('href', '#')
         .addClass('sc');
 
@@ -87,7 +88,7 @@ class VTree {
 
   open() {
     this.isOpen = true;
-    this.template.$marker.setInnerHTML('&#' + ARROW_DOWN + ';')
+    this.template.$marker.setInnerHTML(ARROW_DOWN)
         .parentNode
         .parentNode
         .parentNode
@@ -96,7 +97,7 @@ class VTree {
 
   close() {
     this.isOpen = false;
-    this.template.$marker.setInnerHTML('&#' + ARROW_RIGTH + ';')
+    this.template.$marker.setInnerHTML(ARROW_RIGHT)
         .parentNode
         .parentNode
         .parentNode
@@ -111,7 +112,7 @@ class VTree {
     }
   }
 
-  events() {
+  _events() {
     let node = this,
         template = node.template,
         contextMenu = new ContextMenu([
@@ -124,7 +125,7 @@ class VTree {
       this.toggle();
     });
 
-    template.$node.addEventListener('contextmenu', function(e) {
+    template.$node.addEventListener('contextmenu', (e) => {
       e.stopPropagation();
       e.preventDefault();
       contextMenu.setPosition(e.clientX, e.clientY);
@@ -133,13 +134,12 @@ class VTree {
   }
 
   createNode() {
-    let self = this;
-    let newNode = self.appendNode(),
+    let newNode = this.appendNode(),
         tpl = newNode.template;
 
-    self.open();
-    editor(tpl.$link, function(result) {
-      http('POST', '/api/node', {name: result, parent: self._id, isOpen: self.isOpen}).then(function(res) {
+    this.open();
+    editor(tpl.$link, (result) => {
+      http('POST', apiURL + 'node', {name: result, parent: this._id, isOpen: this.isOpen}).then(function(res) {
         tpl.$link.text = newNode.name = res.name;
         newNode._id = res._id;
       });
@@ -147,13 +147,12 @@ class VTree {
   }
 
   editNode() {
-    let self = this,
-        tpl = this.template;
+    let tpl = this.template;
     
     if (tpl.$link.style.display != 'none') {
-      editor(tpl.$link, function(result) {
-        http('PUT', '/api/node/' + self._id, {name: result, isOpen: self.isOpen}).then(function(res) {
-          tpl.$link.text = self.name = res.name;
+      editor(tpl.$link, (result) => {
+        http('PUT', apiURL + 'node/' + this._id, {name: result, isOpen: this.isOpen}).then((res) => {
+          tpl.$link.text = this.name = res.name;
         });
       });
     }
@@ -163,10 +162,10 @@ class VTree {
     if (!confirm('Are you sure?')) {
       return false;
     }
-    let self = this;
-    http('DELETE', '/api/node/' + this._id).then(function(res) {
-      let children = self.parent.children,
-          index = children.indexOf(self),
+
+    http('DELETE', apiURL + 'node/' + this._id).then((res) => {
+      let children = this.parent.children,
+          index = children.indexOf(this),
           result = children.splice(index, 1).shift();
       result.template.$node.remove();
     });
@@ -179,7 +178,7 @@ class VTree {
 
   fetch() {
     let self = this;
-    http('GET', 'api/node').then(
+    http('GET', apiURL + 'node').then(
         function(res) {
           function children(tr, parent) {
             res.forEach(function(item) {
